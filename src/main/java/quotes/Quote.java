@@ -1,12 +1,12 @@
 package quotes;
 
-public class Quotes {
+public class Quote {
     // instance variables
     String author;
     String text;
 
     // constructor function
-    public Quotes(String author, String text) {
+    public Quote(String author, String text) {
         this.author = author;
         this.text = text;
     }
