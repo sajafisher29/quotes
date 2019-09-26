@@ -3,12 +3,28 @@
  */
 package quotes;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import static org.junit.Assert.*;
 
 public class AppTest {
-    @Test public void testAppHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+    public AppTest() throws FileNotFoundException {
+    }
+
+    // testing json reading
+    Scanner reader = new Scanner(new File("src/test/resources/testJson.json"));
+    String firstLine = reader.nextLine();
+
+
+    @Test public void testToReadJson() {
+        assertEquals("[",
+                "[",
+                firstLine
+        );
     }
 }
