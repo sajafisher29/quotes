@@ -24,8 +24,8 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.0-jre'
 
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:27.1-jre'
+    // use to parse json
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
