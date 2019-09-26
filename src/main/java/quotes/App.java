@@ -16,6 +16,7 @@ public class App {
         Gson gson = new Gson();
 
         Reader reader = new FileReader(new File("src/main/resources/recentquotes.json"));
+
         Quotes[] superCoolQuotesArray = gson.fromJson(reader, Quotes[].class);
 
         //System.out.println(superCoolQuotesArray[5].author);
