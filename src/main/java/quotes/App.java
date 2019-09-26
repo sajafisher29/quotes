@@ -7,23 +7,26 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.Reader;
 
 public class App {
 
 
     public static void main(String[] args) throws FileNotFoundException {
-
+        // read all quotes from file into superCoolQuotesArray variable
         Gson gson = new Gson();
-        Reader reader = new FileReader(new File("src/main/resources/recentquotes.json"));
-        Quotes[] superCoolQuotesArray = gson.fromJson(reader, Quotes[].class);
 
-        System.out.println(superCoolQuotesArray[5].author);
+        Quote[] superCoolQuotesArray = gson.fromJson(
+                new FileReader(new File("src/main/resources/recentquotes.json")),
+                Quote[].class);
+
+        //System.out.println(superCoolQuotesArray[5].author);
 
         // create random number generator
+        // thanks to https://dzone.com/articles/random-number-generation-in-java
+        // TO DO: does it check zero index?
         int max = superCoolQuotesArray.length;
         int min = 0;
-        int randomNumber = (int) (Math.random() * ((max - min) + 1)) + min;
+        int randomNumber = (int) (Math.random() * ((max - min) + 1));
         //System.out.println(randomNumber);
 
         //System.out.println(superCoolQuotesArray[17]);
