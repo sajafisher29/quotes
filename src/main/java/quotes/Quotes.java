@@ -11,11 +11,6 @@ public class Quotes {
         this.text = text;
     }
 
-    // === instance methods
-    public void getQuote() {
-        System.out.println(this.author + "is real");
-    }
-
     // return in a string
     @Override
     public String toString() {

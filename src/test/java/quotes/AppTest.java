@@ -3,7 +3,7 @@
  */
 package quotes;
 
-import com.google.gson.internal.bind.util.ISO8601Utils;
+import com.google.gson.Gson;
 import org.junit.Test;
 
 import java.io.File;
@@ -17,14 +17,28 @@ public class AppTest {
     }
 
     // testing json reading
+    Gson gson = new Gson();
     Scanner reader = new Scanner(new File("src/test/resources/testJson.json"));
     String firstLine = reader.nextLine();
 
 
-    @Test public void testToReadJson() {
+    @Test
+    public void testToReadJson() {
         assertEquals("[",
                 "[",
                 firstLine
         );
     }
+
+    // check that file exists
+    // assistance for this thanks to Jon Veach
+    @Test
+    public void testForFileExistance() {
+        File testPath = new File("src/main/resources/recentquotes.json");
+        boolean exists = testPath.exists();
+        assertTrue(exists);
+    }
+
+    // NEED a test to check if a quote or an author exists in the list
+
 }
