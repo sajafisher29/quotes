@@ -3,42 +3,50 @@
  */
 package quotes;
 
-import com.google.gson.Gson;
 import org.junit.Test;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+
 
 import static org.junit.Assert.*;
 
 public class AppTest {
-    public AppTest() throws FileNotFoundException {
-    }
 
-    // testing json reading
-    Gson gson = new Gson();
-    Scanner reader = new Scanner(new File("src/test/resources/testJson.json"));
-    String firstLine = reader.nextLine();
-
-
-    @Test
-    public void testToReadJson() {
-        assertEquals("[",
-                "[",
-                firstLine
-        );
-    }
-
-    // check that file exists
     // assistance for this thanks to Jon Veach
     @Test
-    public void testForFileExistance() {
+    public void testForFileExistence() {
         File testPath = new File("src/main/resources/recentquotes.json");
         boolean exists = testPath.exists();
         assertTrue(exists);
     }
 
-    // NEED a test to check if a quote or an author exists in the list
 
+    @Test
+    public void testGetRandomQuote() {
+        // make up a new quote to use for testing
+        Quote[] quotes = new Quote[]{new Quote("Luna", "Dogbones are better than candy")};
+        assertEquals("a random quote with size 1 from the quote array should return that quote ",
+                quotes[0],
+                App.getRandomQuote(quotes));
+    }
+
+    // Tests that quotes are randomly selected when there are two quotes in the array. Code thanks to Michelle Ferreirae
+    @Test
+    public void testGetTwoRandomQuotes() {
+        // make up a new quote to use for testing
+        Quote[] quotes = new Quote[]{new Quote("Luna", "Dogbones are better than candy"),
+                new Quote("Paul",
+                        "If you're standing and you can sit, sit")};
+
+        int luna = 0;
+        int paul = 0;
+        for (int i = 0; i < 1000; i++) {
+            Quote q = App.getRandomQuote(quotes);
+            if (q == quotes[0]) {
+                luna++;
+                paul++;
+            }
+        }
+        assertTrue(luna > 445 && paul < 555);
+        assertTrue(paul > 445 && luna < 555);
+   }
 }

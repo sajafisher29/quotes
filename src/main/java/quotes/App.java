@@ -10,47 +10,22 @@ import java.io.FileReader;
 
 public class App {
 
-
     public static void main(String[] args) throws FileNotFoundException {
+
         // read all quotes from file into superCoolQuotesArray variable
         Gson gson = new Gson();
-
         Quote[] superCoolQuotesArray = gson.fromJson(
                 new FileReader(new File("src/main/resources/recentquotes.json")),
                 Quote[].class);
 
-        //System.out.println(superCoolQuotesArray[5].author);
-
-        // create random number generator
-        // thanks to https://dzone.com/articles/random-number-generation-in-java
-        // TO DO: does it check zero index?
-        int max = superCoolQuotesArray.length;
-        int min = 0;
-        int randomNumber = (int) (Math.random() * ((max - min) + 1));
-        //System.out.println(randomNumber);
-
         //System.out.println(superCoolQuotesArray[17]);
-        System.out.println(superCoolQuotesArray[randomNumber]);
+        System.out.println(getRandomQuote(superCoolQuotesArray));
     }
 
-    // ==== WORKING ON REFACTORING CODE --->  not yet working <----  ========
-
-//    public static Object[] getJSONData() throws FileNotFoundException {
-//        Gson gson = new Gson();
-//        Reader reader = new FileReader(new File("src/main/resources/recentquotes.json"));
-//        Quotes[] superCoolQuotesArray = gson.fromJson(reader, Quotes[].class);
-//
-//        //System.out.println(superCoolQuotesArray[17]);
-//        System.out.println(superCoolQuotesArray[]);
-//
-//    }
-//
-//    public int randomNumberGenerator() {
-//        // create random number generator
-//        int max = superCoolQuotesArray.length;
-//        int min = 0;
-//        int randomNumber = (int) (Math.random() * ((max - min) + 1)) + min;
-//        return randomNumber;
-//    }
-
+    // get a random quote from an array of quotes using a helper method
+    public static Quote getRandomQuote(Quote[] quotes) {
+        // get random number
+        int index = (int)(Math.random() * quotes.length);
+        return quotes[index];
+    }
 }
