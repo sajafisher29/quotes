@@ -11,15 +11,7 @@ import java.io.FileReader;
 public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
-
-        // read all quotes from file into superCoolQuotesArray variable
-        Gson gson = new Gson();
-        Quote[] superCoolQuotesArray = gson.fromJson(
-                new FileReader(new File("src/main/resources/recentquotes.json")),
-                Quote[].class);
-
-        //System.out.println(superCoolQuotesArray[17]);
-        System.out.println(getRandomQuote(superCoolQuotesArray));
+        getRandomQuote();
     }
 
     // get a random quote from an array of quotes using a helper method
@@ -27,5 +19,14 @@ public class App {
         // get random number
         int index = (int)(Math.random() * quotes.length);
         return quotes[index];
+    }
+
+    public static void buildQuoteArray() {
+        // read all quotes from file into superCoolQuotesArray variable
+        Gson gson = new Gson();
+        Quote[] superCoolQuotesArray = gson.fromJson(
+                new FileReader(new File("src/main/resources/recentquotes.json")),
+                Quote[].class);
+        System.out.println(getRandomQuote(superCoolQuotesArray));
     }
 }
