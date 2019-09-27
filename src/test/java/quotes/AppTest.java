@@ -29,6 +29,7 @@ public class AppTest {
                 App.getRandomQuote(quotes));
     }
 
+    // Tests that quotes are randomly selected when there are two quotes in the array. Code thanks to Michelle Ferreirae
     @Test
     public void testGetTwoRandomQuotes() {
         // make up a new quote to use for testing
