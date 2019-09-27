@@ -21,7 +21,7 @@ public class App {
             Quote joke = new Quote("The Universe", new App().getDataFromAPI());
             jokeWriter.append(gson.toJson(joke));
             jokeWriter.close();
-            appendJoke();
+//            appendJoke();
             //Print a joke from the API
             System.out.println(joke);
 
@@ -62,10 +62,10 @@ public class App {
         return joke;
     }
 
-    public static Object[] appendJoke(Object[] quotesArray, Object joke) {
-        while (!quotesArray.contain(joke)) {
-            ArrayList<Object> cache = new ArrayList<>(Arrays.asList(quotesArray));
-            cache.add(joke);
-            return cache.toArray();
-    }
+//    public static Object[] appendJoke(Object[] quotesArray, Object joke) {
+//        while (!quotesArray.contain(joke)) {
+//            ArrayList<Object> cache = new ArrayList<>(Arrays.asList(quotesArray));
+//            cache.add(joke);
+//            return cache.toArray();
+//    }
 }
