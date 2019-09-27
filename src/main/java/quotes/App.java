@@ -4,22 +4,31 @@
 package quotes;
 
 import com.google.gson.Gson;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
+        try {
+            //Add the joke to the quotesArray
+            FileWriter jokeWriter = new FileWriter("src/main/resources/apijoketest.json");
+            Gson gson = new Gson();
+            Quote joke = new Quote("The Universe", new App().getDataFromAPI());
+            jokeWriter.append(gson.toJson(joke));
+            jokeWriter.close();
+//            appendJoke();
+            //Print a joke from the API
+            System.out.println(joke);
 
-        // read all quotes from file into superCoolQuotesArray variable
-        Gson gson = new Gson();
-        Quote[] superCoolQuotesArray = gson.fromJson(
-                new FileReader(new File("src/main/resources/recentquotes.json")),
-                Quote[].class);
-
-        //System.out.println(superCoolQuotesArray[17]);
-        System.out.println(getRandomQuote(superCoolQuotesArray));
+        } catch (IOException e) {
+            System.out.println("API could not be reached.");
+            buildQuoteArray();
+        }
     }
 
     // get a random quote from an array of quotes using a helper method
@@ -28,4 +37,35 @@ public class App {
         int index = (int)(Math.random() * quotes.length);
         return quotes[index];
     }
+
+    private static void buildQuoteArray() throws FileNotFoundException {
+        // read all quotes from file into superCoolQuotesArray variable
+        Gson gson = new Gson();
+        Quote[] quoteArray = gson.fromJson(
+                new FileReader(new File("src/main/resources/recentquotes.json")),
+                Quote[].class);
+        System.out.println(getRandomQuote(quoteArray));
+    }
+
+    private String getDataFromAPI() throws IOException {
+        URL jqueryUrl = new URL("https://geek-jokes.sameerkumar.website/api");
+        HttpURLConnection connection = (HttpURLConnection) jqueryUrl.openConnection();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder data = new StringBuilder();
+        String line = reader.readLine();
+
+        while (line != null) {
+            data.append(line);
+            line = reader.readLine();
+        }
+        String joke = data.toString();
+        return joke;
+    }
+
+//    public static Object[] appendJoke(Object[] quotesArray, Object joke) {
+//        while (!quotesArray.contain(joke)) {
+//            ArrayList<Object> cache = new ArrayList<>(Arrays.asList(quotesArray));
+//            cache.add(joke);
+//            return cache.toArray();
+//    }
 }
