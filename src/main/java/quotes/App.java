@@ -8,27 +8,42 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
+
+import static java.lang.System.*;
 
 public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
         try {
-            //Add the joke to the quotesArray
-            FileWriter jokeWriter = new FileWriter("src/main/resources/apijoketest.json");
-            Gson gson = new Gson();
-            Quote joke = new Quote("The Universe", new App().getDataFromAPI());
-            jokeWriter.append(gson.toJson(joke));
-            jokeWriter.close();
-//            appendJoke();
-            //Print a joke from the API
-            System.out.println(joke);
-
+            cacheJokeToFile();
         } catch (IOException e) {
-            System.out.println("API could not be reached.");
-            buildQuoteArray();
+            out.println("API could not be reached.");
+            readFromArray();
         }
+    }
+
+    // put joke from API in JSON file
+    private static void cacheJokeToFile() throws IOException {
+        // access key value pairs from the class Quote constructor to format what we get from the API
+        Quote joke = new Quote("The Universe", new App().getDataFromAPI());
+        // print joke to console
+        out.println(joke);
+        // use the file reader to access the JSON file and create new gson
+        Reader fileReader = new FileReader(new File("src/main/resources/recentquotes.json"));
+        Gson gson = new Gson();
+        // build Quotes array
+        Quote[] quotesArray = gson.fromJson(fileReader, Quote[].class);
+        // make a new array one element longer than the previous
+        Quote[] newQuotesArray = new Quote[quotesArray.length + 1];
+        // add the new joke and all the original quotes/jokes to the new array
+        arraycopy(quotesArray, 0, newQuotesArray, 0, quotesArray.length); // I think this is where the Monroe quote is getting stuck. Need to follow up on this.
+        // add new joke to end of the new array
+        newQuotesArray[newQuotesArray.length - 1] = joke;
+        // replace current content in json file with the new array content
+        FileWriter jokeWriter = new FileWriter("src/main/resources/apijoke.json");
+        gson.toJson(newQuotesArray, jokeWriter);
+        // close the quoteWriter
+        jokeWriter.close();
     }
 
     // get a random quote from an array of quotes using a helper method
@@ -38,16 +53,7 @@ public class App {
         return quotes[index];
     }
 
-    private static void buildQuoteArray() throws FileNotFoundException {
-        // read all quotes from file into superCoolQuotesArray variable
-        Gson gson = new Gson();
-        Quote[] quoteArray = gson.fromJson(
-                new FileReader(new File("src/main/resources/recentquotes.json")),
-                Quote[].class);
-        System.out.println(getRandomQuote(quoteArray));
-    }
-
-    private String getDataFromAPI() throws IOException {
+    String getDataFromAPI() throws IOException {
         URL jqueryUrl = new URL("https://geek-jokes.sameerkumar.website/api");
         HttpURLConnection connection = (HttpURLConnection) jqueryUrl.openConnection();
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -58,14 +64,17 @@ public class App {
             data.append(line);
             line = reader.readLine();
         }
-        String joke = data.toString();
-        return joke;
+        return data.toString();
     }
 
-//    public static Object[] appendJoke(Object[] quotesArray, Object joke) {
-//        while (!quotesArray.contain(joke)) {
-//            ArrayList<Object> cache = new ArrayList<>(Arrays.asList(quotesArray));
-//            cache.add(joke);
-//            return cache.toArray();
-//    }
+    // get a random quote from the saved array when the API is not found
+    static void readFromArray() throws FileNotFoundException {
+        // read all the quotes/jokes in the JSON file
+        Reader fileReader = new FileReader(new File("src/main/resources/recentquotes.json"));
+        Gson gson = new Gson();
+        // build Quotes array
+        Quote[] quotesArray = gson.fromJson(fileReader, Quote[].class);
+        // print out a random quote
+        out.println(getRandomQuote(quotesArray));
+    }
 }

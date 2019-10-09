@@ -15,7 +15,7 @@ public class Quote {
     @Override
     public String toString() {
         return String.format(
-                "%s wrote this amazing quote: %s",
+                "%s says %s",
                 this.author,
                 this.text);
     }

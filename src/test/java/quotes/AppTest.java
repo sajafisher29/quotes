@@ -3,35 +3,52 @@
  */
 package quotes;
 
+import org.junit.Before;
 import org.junit.Test;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 import static org.junit.Assert.*;
 
 public class AppTest {
 
-    // assistance for this thanks to Jon Veach
-    @Test
-    public void testForFileExistence() {
+    // assistance for this thanks to Jon Veach and James Dansie
+
+    App test;
+    @Before public void setup() throws IOException {
+        test = new App();
+        test.getDataFromAPI();
+    }
+
+    // test that the file is there
+    @Test public void testForFileExistence() {
         File testPath = new File("src/main/resources/recentquotes.json");
         boolean exists = testPath.exists();
         assertTrue(exists);
     }
 
+    // test that the data is not null
+//    @Test public void getData() {
+//        assertNotNull("Checking that data is not null",
+//                test.// need to pull data from quotesArray, may need to be refactored to be accessible);
+//    }
 
-    @Test
-    public void testGetRandomQuote() {
-        // make up a new quote to use for testing
-        Quote[] quotes = new Quote[]{new Quote("Luna", "Dogbones are better than candy")};
-        assertEquals("a random quote with size 1 from the quote array should return that quote ",
-                quotes[0],
-                App.getRandomQuote(quotes));
+    // test that getRandomQuote pulls a quote
+    @Test public void testGetRandomQuote() throws IOException {
+            assertNotNull("Getting an api response",
+                    test.getDataFromAPI());
     }
 
-    // Tests that quotes are randomly selected when there are two quotes in the array. Code thanks to Michelle Ferreirae
-    @Test
-    public void testGetTwoRandomQuotes() {
+    // Use this test once Monroe quote gets worked out.
+//    @Test public void testGetOffline() throws FileNotFoundException {
+//        assertNotNull("Getting a stored response",
+//                test.readFromArray());
+//    }
+
+    // test that quotes are randomly selected when there are two quotes in the array. Code thanks to Michelle Ferreirae
+    @Test public void testGetTwoRandomQuotes() {
         // make up a new quote to use for testing
         Quote[] quotes = new Quote[]{new Quote("Luna", "Dogbones are better than candy"),
                 new Quote("Paul",
